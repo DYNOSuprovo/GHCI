@@ -12,6 +12,7 @@ EXPOSE 8000
 EXPOSE 8501
 
 # Generate data and train model during build
+ENV PYTHONPATH=/app
 RUN python src/data_generator.py
 RUN python src/model.py
 
