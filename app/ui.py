@@ -33,6 +33,24 @@ with col1:
                 st.success(f"Category: **{data['category']}**")
                 st.info(f"Confidence: {data['confidence']:.2f}")
                 
+                # Feedback Loop
+                st.markdown("---")
+                st.write("Is this correct?")
+                
+                # Get category names for dropdown
+                cat_names = [c["name"] for c in get_categories()]
+                correct_cat = st.selectbox("Correct Category", cat_names, index=cat_names.index(data['category']) if data['category'] in cat_names else 0)
+                
+                if st.button("Submit Feedback"):
+                    try:
+                        fb_response = requests.post(f"{API_URL}/feedback", json={"description": description, "correct_category": correct_cat})
+                        if fb_response.status_code == 200:
+                            st.success("Thank you! Feedback recorded.")
+                        else:
+                            st.error("Failed to save feedback.")
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+                
                 st.subheader("Explanation")
                 if data['explanation']:
                     exp_df = pd.DataFrame(data['explanation'])

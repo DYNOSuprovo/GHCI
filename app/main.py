@@ -74,9 +74,26 @@ def predict_batch(request: BatchTransactionRequest):
         
     return results
 
+class FeedbackRequest(BaseModel):
+    description: str
+    correct_category: str
+
+@app.post("/feedback")
+def submit_feedback(request: FeedbackRequest):
+    feedback_file = "data/feedback.csv"
+    file_exists = os.path.exists(feedback_file)
+    
+    with open(feedback_file, "a") as f:
+        if not file_exists:
+            f.write("description,correct_category\n")
+        f.write(f"{request.description},{request.correct_category}\n")
+    
+    return {"message": "Feedback received"}
+
 @app.get("/categories")
 def get_categories():
     return config["categories"]
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
