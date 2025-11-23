@@ -1,0 +1,20 @@
+categories:
+  - id: 0
+    name: "Groceries"
+    keywords: ["supermarket", "mart", "grocery", "whole foods", "trader joes", "walmart", "target", "kroger", "safeway", "albertsons", "publix", "wegmans", "aldi", "lidl", "costco", "sams club", "bjs", "food", "fresh"]
+  - id: 1
+    name: "Entertainment"
+    keywords: ["netflix", "spotify", "cinema", "movie", "ticket", "hulu", "disney", "hbo", "amazon prime video", "apple tv", "youtube premium", "paramount", "peacock", "theater", "concert", "show", "amc", "regal", "cinemark"]
+  - id: 2
+    name: "Transport"
+    keywords: ["uber", "lyft", "taxi", "bus", "train", "gas", "fuel", "metro", "transit", "subway", "chevron", "shell", "exxon", "mobil", "bp", "arco", "parking", "toll", "airline", "flight"]
+  - id: 3
+    name: "Dining"
+    keywords: ["restaurant", "cafe", "coffee", "starbucks", "mcdonalds", "burger", "chipotle", "subway", "panera", "dunkin", "taco bell", "wendys", "chick fil a", "kfc", "pizza hut", "dominos", "in n out", "shake shack", "five guys", "food", "diner", "bistro", "eatery"]
+  - id: 4
+    name: "Utilities"
+    keywords: ["electric", "water", "gas", "internet", "phone", "utility", "bill", "comcast", "xfinity", "verizon", "att", "tmobile", "sprint", "pg&e", "pge", "duke energy", "constellation", "cable", "wireless", "mobile", "broadband"]
+  - id: 5
+    name: "Shopping"
+    keywords: ["amazon", "target", "walmart", "clothing", "store", "ebay", "best buy", "macys", "nordstrom", "kohls", "jcpenney", "sears", "dillards", "neiman marcus", "saks", "bloomingdales", "tj maxx", "marshalls", "ross", "gap", "old navy", "h&m", "zara", "uniqlo", "mall", "shop", "retail", "boutique"]
+
