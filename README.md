@@ -1,156 +1,134 @@
-# 💰 Transaction Categorization System
+# 💰 AI-Driven Transaction Categorization System
 
 A robust, explainable, and production-ready AI system for categorizing financial transactions. Built with **FastAPI**, **Streamlit**, and **Scikit-learn**, it features explainable AI (SHAP), batch processing, and a human-in-the-loop feedback mechanism.
 
 ---
 
-## 🚀 Live Demo
-**Frontend**: [Streamlit App](https://dynosuprovo-ghci-appstreamlit-app-okqqdx.streamlit.app/)  
-**Backend**: [Render API](https://ghci-stjj.onrender.com/docs)
+## � Important Links
+
+| Component | Link |
+|-----------|------|
+| **📂 GitHub Repository** | [https://github.com/DYNOSuprovo/GHCI](https://github.com/DYNOSuprovo/GHCI) |
+| **🚀 Live App (Streamlit)** | [https://dynosuprovo-ghci-appstreamlit-app-okqqdx.streamlit.app/](https://dynosuprovo-ghci-appstreamlit-app-okqqdx.streamlit.app/) |
+| **🔌 API Docs (Render)** | [https://ghci-stjj.onrender.com/docs#/](https://ghci-stjj.onrender.com/docs#/) |
 
 ---
 
-## ✨ Key Features
+## 📖 Project Overview
 
-- **High Accuracy**: 97% Accuracy on 50k+ synthetic transactions.
-- **Explainable AI**: Uses **SHAP** (SHapley Additive exPlanations) to show *why* a transaction was categorized.
-- **Batch Processing**: Upload CSVs or paste multiple transactions for bulk classification.
-- **Feedback Loop**: Users can correct predictions, saving data for future retraining.
-- **Configurable Taxonomy**: Easily update categories via `config/categories.yaml`.
-- **Production Ready**: Dockerized, CI/CD friendly, and scalable.
+This project solves the problem of categorizing raw financial transaction strings (e.g., "STARBUCKS COFFEE NY", "UBER TRIP") into meaningful categories (e.g., "Dining", "Transport"). It is designed to be:
+- **Autonomous**: Runs entirely locally or in a container (no external APIs).
+- **Explainable**: Tells you *why* a transaction was categorized a certain way.
+- **Adaptable**: Users can correct mistakes, and the system learns from them.
 
----
-
-## 🛠️ Tech Stack
-
-- **Core**: Python 3.9+
-- **ML**: Scikit-learn (Logistic Regression + TF-IDF), SHAP, MLflow
-- **Backend**: FastAPI, Uvicorn
-- **Frontend**: Streamlit, Pandas
-- **DevOps**: Docker, Docker Compose
+### 📄 Documentation
+For a deep dive into the system architecture and design, please refer to the project report:
+👉 **[AI-Driven Transaction Categorization System.pdf](AI-Driven%20Transaction%20Categorization%20System.pdf)**
 
 ---
 
-## 📦 Installation & Setup
+## 🛠️ Tech Stack & Workflow
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/DYNOSuprovo/GHCI.git
-cd GHCI
-```
+### Architecture
+The system follows a microservices-like architecture (even when running monolithically):
 
-### 2. Create Virtual Environment
-```bash
-python -m venv venv
-# Windows
-.\venv\Scripts\activate
-# Mac/Linux
-source venv/bin/activate
-```
+1.  **Data Ingestion**: Synthetic data generation (`src/data_generator.py`) simulates real-world banking transactions with noise.
+2.  **Preprocessing**: Text normalization (`src/preprocessing.py`) cleans raw strings (removes special chars, lowercases).
+3.  **Model Training**: A TF-IDF + Logistic Regression pipeline (`src/model.py`) trains on the data.
+4.  **Inference API**: FastAPI (`app/main.py`) serves the model and handles batch requests.
+5.  **User Interface**: Streamlit (`app/ui.py`) provides an interactive dashboard for users.
+6.  **Feedback Loop**: User corrections are saved to `data/feedback.csv` for future retraining.
 
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Generate Data & Train Model
-```bash
-# Generate 50,000 synthetic transactions
-python src/data_generator.py
-
-# Train the model (saves to models/model.pkl)
-python src/model.py
-```
+### Libraries Used
+- **Machine Learning**: `scikit-learn`, `pandas`, `numpy`
+- **Explainability**: `shap` (SHapley Additive exPlanations)
+- **Backend**: `fastapi`, `uvicorn`
+- **Frontend**: `streamlit`
+- **Ops**: `docker`, `mlflow` (experiment tracking)
 
 ---
 
-## 🏃‍♂️ Running the App
+## � File Structure & Details
 
-### Option A: Full Stack (API + UI)
-**Terminal 1 (Backend):**
-```bash
-uvicorn app.main:app --reload --port 8000
-```
-**Terminal 2 (Frontend):**
-```bash
-streamlit run app/ui.py
-```
+| File/Directory | Description |
+|----------------|-------------|
+| `app/main.py` | **FastAPI Backend**: Handles `/predict`, `/predict_batch`, and `/feedback` endpoints. |
+| `app/ui.py` | **Streamlit Frontend**: The UI that connects to the FastAPI backend. |
+| `app/streamlit_app.py` | **Standalone App**: A self-contained version for Streamlit Cloud deployment (Monolith). |
+| `src/model.py` | **Model Logic**: Defines `TransactionClassifier` class, training loop, and evaluation metrics. |
+| `src/data_generator.py` | **Data Engine**: Generates 50,000+ synthetic transactions based on `categories.yaml`. |
+| `src/explainability.py` | **XAI Engine**: Generates SHAP values to explain model predictions. |
+| `config/categories.yaml` | **Configuration**: Defines the taxonomy (Categories and Keywords). |
+| `Dockerfile` | **Deployment**: Defines the container environment for Render/Docker. |
+| `requirements.txt` | **Dependencies**: List of Python packages required. |
 
-### Option B: Standalone Streamlit (No API needed)
-```bash
-streamlit run app/streamlit_app.py
-```
+---
 
-### Option C: Docker
+## 🚀 How to Run
+
+### Option 1: Live Demo (Easiest)
+Simply visit the [Live App](https://dynosuprovo-ghci-appstreamlit-app-okqqdx.streamlit.app/).
+
+### Option 2: Run Locally (Docker)
+If you have Docker installed:
 ```bash
 docker-compose up -d
 ```
+- UI: `http://localhost:8501`
+- API: `http://localhost:8000/docs`
+
+### Option 3: Run Locally (Python)
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/DYNOSuprovo/GHCI.git
+   cd GHCI
+   python -m venv venv
+   .\venv\Scripts\activate  # or source venv/bin/activate on Mac/Linux
+   pip install -r requirements.txt
+   ```
+
+2. **Train Model**:
+   ```bash
+   python src/data_generator.py  # Generate data
+   python src/model.py           # Train model
+   ```
+
+3. **Run App**:
+   ```bash
+   streamlit run app/streamlit_app.py
+   ```
 
 ---
 
-## 🌐 API Documentation
+## 🧠 Key Functions Explained
 
-Once the backend is running, visit `http://localhost:8000/docs` for interactive Swagger UI.
+### `TransactionClassifier.train()`
+- Loads data from CSV.
+- Splits into Train/Test sets.
+- Trains a `TfidfVectorizer` + `LogisticRegression` pipeline.
+- Logs metrics (Accuracy, F1-Score) to MLflow.
+- Generates and saves a Confusion Matrix.
 
-### Endpoints
-- `POST /predict`: Classify a single transaction.
-- `POST /predict_batch`: Classify a list of transactions.
-- `POST /feedback`: Submit user corrections.
-- `GET /categories`: Get list of supported categories.
+### `Explainer.explain(text)`
+- Uses a SHAP KernelExplainer.
+- Calculates the contribution of each word to the final prediction.
+- Returns a list of `{word, contribution}` for visualization.
 
----
-
-## 📂 Project Structure
-
-```
-GHCI/
-├── app/
-│   ├── main.py           # FastAPI Backend
-│   ├── ui.py             # Streamlit Frontend (API-based)
-│   └── streamlit_app.py  # Standalone Streamlit App
-├── config/
-│   └── categories.yaml   # Taxonomy Configuration
-├── data/                 # Generated datasets & feedback
-├── models/               # Trained model artifacts
-├── src/
-│   ├── data_generator.py # Synthetic data generation
-│   ├── model.py          # Model training & evaluation
-│   ├── explainability.py # SHAP explanation logic
-│   └── preprocessing.py  # Text cleaning
-├── Dockerfile            # Container definition
-├── requirements.txt      # Python dependencies
-└── README.md             # This file
-```
-
----
-
-## ☁️ Deployment
-
-### Streamlit Cloud (Frontend)
-1. Fork this repo.
-2. Go to [share.streamlit.io](https://share.streamlit.io).
-3. Deploy `app/streamlit_app.py`.
-
-### Render.com (Backend)
-1. Create a **Web Service** on Render.
-2. Connect your repo.
-3. Select **Docker** environment.
-4. Deploy!
-
-For detailed instructions, see **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**.
+### `predict_batch(transactions)`
+- Optimized endpoint for processing thousands of transactions at once.
+- Skips SHAP generation for speed.
+- Returns a JSON list of categories and confidence scores.
 
 ---
 
 ## 🤝 Contributing
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+1. Fork the repo.
+2. Create a branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m "Added feature"`
+4. Push: `git push origin feature-name`
+5. Open a Pull Request!
 
 ---
 
 ## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
+MIT License. Free to use and modify.
